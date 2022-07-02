@@ -1,4 +1,4 @@
 export const locations = {
     home: () => "/",
-    portfolio: () => "/portfolio",
+    wallet: () => "/wallet",
 };
