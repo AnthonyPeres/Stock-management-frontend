@@ -3,6 +3,8 @@ import { Routes as Switch, Route, Navigate, BrowserRouter as Router } from "reac
 import { locations } from "./locations";
 import { Home } from "../../views/Home";
 import { Wallet } from "../../views/Wallet";
+import { Settings } from "../../views/Settings";
+import { TickersManagement } from "../../views/Settings/TickersManagement";
 
 const Routes = () => {
     return (
@@ -10,6 +12,8 @@ const Routes = () => {
             <Switch>
                 <Route path={locations.home()} element={<Home />} />
                 <Route path={locations.wallet()} element={<Wallet />} />
+                <Route path={locations.settings()} element={<Settings />} />
+                <Route path={locations.settings_tickers()} element={<TickersManagement />} />
             </Switch>
         </Router>
     );

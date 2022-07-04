@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-import { createStyles, Navbar, UnstyledButton, Tooltip, Title } from "@mantine/core";
 import {
+    Icon as TablerIcon,
     Home2,
     Wallet,
     Gauge,
@@ -10,9 +10,12 @@ import {
     Fingerprint,
     CalendarStats,
     User,
+    Logout,
+    SwitchHorizontal,
     Settings,
 } from "tabler-icons-react";
 import { locations } from "../Routes/locations";
+import { Title, Navbar, Center, Tooltip, UnstyledButton, createStyles, Group } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
     wrapper: {
@@ -114,7 +117,37 @@ const useStyles = createStyles((theme) => ({
             color: theme.white,
         },
     },
+
+    active: {
+        "&, &:hover": {
+            backgroundColor:
+                theme.colorScheme === "dark"
+                    ? theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.25)
+                    : theme.colors[theme.primaryColor][0],
+            color: theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 7],
+        },
+    },
 }));
+
+interface NavbarLinkProps {
+    icon: TablerIcon;
+    label: string;
+    active?: boolean;
+    onClick?(): void;
+}
+function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
+    const { classes, cx } = useStyles();
+    return (
+        <Tooltip label={label} position="right" withArrow transitionDuration={0}>
+            <UnstyledButton
+                onClick={onClick}
+                className={cx(classes.link, { [classes.active]: active })}
+            >
+                <Icon />
+            </UnstyledButton>
+        </Tooltip>
+    );
+}
 
 const mainLinksMockdata = [
     { icon: Home2, label: "Home", path: "/" },
@@ -183,6 +216,16 @@ const NavigationBar = () => {
 
                     {links}
                 </div>
+            </Navbar.Section>
+            <Navbar.Section>
+                <Group direction="column" align="left" spacing={0}>
+                    <NavbarLink
+                        icon={Settings}
+                        label="Settings"
+                        onClick={() => (window.location.href = locations.settings())}
+                    />
+                    <NavbarLink icon={Logout} label="Logout" />
+                </Group>
             </Navbar.Section>
         </Navbar>
     );

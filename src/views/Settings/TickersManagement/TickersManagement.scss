@@ -1,0 +1,31 @@
+@import "../../../styles/index.scss";
+
+.tickers-management {
+    display: flex;
+    padding: 0;
+    margin: 0;
+
+    .table {
+        width: 70%;
+        height: 90vh;
+        overflow-y: scroll;
+    }
+
+    .form {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 1rem;
+        gap: 2rem;
+
+        .form-add,
+        .form-remove {
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            gap: 0.5rem;
+        }
+    }
+}
