@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { ActionIcon, useMantineColorScheme } from "@mantine/core";
+import { Sun, MoonStars } from "tabler-icons-react";
 
 import {
     Icon as TablerIcon,
@@ -13,6 +15,7 @@ import {
     Logout,
     SwitchHorizontal,
     Settings,
+    DeviceAnalytics,
 } from "tabler-icons-react";
 import { locations } from "../Routes/locations";
 import { Title, Navbar, Center, Tooltip, UnstyledButton, createStyles, Group } from "@mantine/core";
@@ -129,46 +132,23 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-interface NavbarLinkProps {
-    icon: TablerIcon;
-    label: string;
-    active?: boolean;
-    onClick?(): void;
-}
-function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
-    const { classes, cx } = useStyles();
-    return (
-        <Tooltip label={label} position="right" withArrow transitionDuration={0}>
-            <UnstyledButton
-                onClick={onClick}
-                className={cx(classes.link, { [classes.active]: active })}
-            >
-                <Icon />
-            </UnstyledButton>
-        </Tooltip>
-    );
-}
-
-const mainLinksMockdata = [
-    { icon: Home2, label: "Home", path: "/" },
-    { icon: Wallet, label: "Wallet", path: "/wallet" },
-    // { icon: Gauge, label: "Dashboard" },
-    // { icon: DeviceDesktopAnalytics, label: "Analytics" },
-    // { icon: CalendarStats, label: "Releases" },
-    // { icon: User, label: "Account" },
-    // { icon: Fingerprint, label: "Security" },
-    // { icon: Settings, label: "Settings" },
+const topLinksMockdata = [
+    { icon: Home2, label: "Home", path: locations.home() },
+    { icon: Wallet, label: "Wallet", path: locations.wallet() },
+    { icon: DeviceAnalytics, label: "Analyse cours", path: locations.analyse_cours() },
 ];
 
-const linksMockdata = ["Security", "Settings", "Dashboard", "Releases", "Account", "Databases"];
+const bottomLinksMockdata = [
+    { icon: Settings, label: "Settings", path: locations.settings() },
+    { icon: Logout, label: "Logout", path: "/logout" },
+];
 
-// Ne va pas puisque le libele se rafraichit pas automatiquement
 const NavigationBar = () => {
     const { classes, cx } = useStyles();
-    const [active, setActive] = useState("Home");
-    const [activeLink, setActiveLink] = useState("Account");
+    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const dark = colorScheme === "dark";
 
-    const mainLinks = mainLinksMockdata.map((link) => (
+    const topLinks = topLinksMockdata.map((link) => (
         <Tooltip
             label={link.label}
             position="right"
@@ -176,11 +156,10 @@ const NavigationBar = () => {
             transitionDuration={0}
             key={link.label}
         >
-            <NavLink to={link.path} onClick={() => setActive(link.label)}>
+            <NavLink to={link.path}>
                 <UnstyledButton
-                    onClick={() => setActive(link.label)}
                     className={cx(classes.mainLink, {
-                        [classes.mainLinkActive]: link.label === active,
+                        [classes.mainLinkActive]: link.path === window.location.pathname.toString(),
                     })}
                 >
                     <link.icon />
@@ -189,42 +168,49 @@ const NavigationBar = () => {
         </Tooltip>
     ));
 
-    const links = linksMockdata.map((link) => (
-        <a
-            className={cx(classes.link, { [classes.linkActive]: activeLink === link })}
-            href="/"
-            onClick={(event) => {
-                event.preventDefault();
-                setActiveLink(link);
-            }}
-            key={link}
+    const bottomLinks = bottomLinksMockdata.map((link) => (
+        <Tooltip
+            label={link.label}
+            position="right"
+            withArrow
+            transitionDuration={0}
+            key={link.label}
         >
-            {link}
-        </a>
+            <NavLink to={link.path}>
+                <UnstyledButton
+                    className={cx(classes.mainLink, {
+                        [classes.mainLinkActive]: link.path === window.location.pathname.toString(),
+                    })}
+                >
+                    <link.icon />
+                </UnstyledButton>
+            </NavLink>
+        </Tooltip>
     ));
-    return (
-        <Navbar width={{ sm: 300 }} p="xs">
-            <Navbar.Section grow className={classes.wrapper}>
-                <div className={classes.aside}>
-                    <div className={classes.logo}>(logo)</div>
-                    {mainLinks}
-                </div>
-                <div className={classes.main}>
-                    <Title order={4} className={classes.title}>
-                        {active}
-                    </Title>
 
-                    {links}
-                </div>
+    return (
+        <Navbar width={{ base: 80 }} p="md">
+            <Center>logo</Center>
+            <Navbar.Section grow mt={50}>
+                <Group direction="column" align="center" spacing={0}>
+                    {topLinks}
+                </Group>
             </Navbar.Section>
+
             <Navbar.Section>
-                <Group direction="column" align="left" spacing={0}>
-                    <NavbarLink
-                        icon={Settings}
-                        label="Settings"
-                        onClick={() => (window.location.href = locations.settings())}
-                    />
-                    <NavbarLink icon={Logout} label="Logout" />
+                <Group direction="column" align="center" spacing={0}>
+                    {bottomLinks}
+                </Group>
+
+                <Group direction="column" align="center" spacing={0}>
+                    <ActionIcon
+                        variant="outline"
+                        color={dark ? "yellow" : "blue"}
+                        onClick={() => toggleColorScheme()}
+                        title="Toggle color scheme"
+                    >
+                        {dark ? <Sun size={18} /> : <MoonStars size={18} />}
+                    </ActionIcon>
                 </Group>
             </Navbar.Section>
         </Navbar>

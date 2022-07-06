@@ -14,18 +14,18 @@ const Layout = (props: Props) => {
         <AppShell
             padding="md"
             navbar={<NavigationBar />}
-            header={
-                <CustomHeader
-                    mainLinks={[
-                        { label: "Home", link: "/" },
-                        { label: "Wallet", link: "/wallet" },
-                    ]}
-                    userLinks={[
-                        { label: "Home", link: "/home" },
-                        { label: "Wallet", link: "/wallet" },
-                    ]}
-                />
-            }
+            // header={
+            //     <CustomHeader
+            //         mainLinks={[
+            //             { label: "Home", link: "/" },
+            //             { label: "Wallet", link: "/wallet" },
+            //         ]}
+            //         userLinks={[
+            //             { label: "Home", link: "/home" },
+            //             { label: "Wallet", link: "/wallet" },
+            //         ]}
+            //     />
+            // }
             styles={(theme) => ({
                 main: {
                     backgroundColor:

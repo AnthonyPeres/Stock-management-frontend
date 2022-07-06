@@ -7,6 +7,7 @@ const Settings = () => {
     return (
         <Layout>
             <div>
+                Settings <br />
                 <NavLink to={locations.settings_tickers()}>Tickers management</NavLink>
             </div>
         </Layout>

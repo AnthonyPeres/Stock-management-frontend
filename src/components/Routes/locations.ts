@@ -3,4 +3,5 @@ export const locations = {
     wallet: () => "/wallet",
     settings: () => "/settings",
     settings_tickers: () => "/settings/tickers",
+    analyse_cours: () => "/analyse/cours",
 };
